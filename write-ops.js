@@ -2,3 +2,26 @@ const AWS = require("aws-sdk");
 AWS.config.update({ region: 'ap-northeast-1'});
 
 const docClient = new AWS.DynamoDB.DocumentClient();
+
+docClient.put({
+  TableName: 'td_nodes_sdk',
+  Item: {
+    user_id: 'ABC',
+    timestamp: 1,
+    title: 'Initial Title',
+    content: 'Initial Content'
+  },
+  ConditionExpression: '#t <> :t',
+  ExpressionAttributeNames: {
+    '#t': 'timestamp'
+  },
+  ExpressionAttributeValues: {
+    ':t': 1
+  }
+}, (err, data) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(data);
+  }
+});
